@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 20th Birthday, Amy!</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            margin: 0;
+            padding: 0;
+            color: #333;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #ff6b6b;
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #ff8e8e;
+            font-size: 1.5em;
+            margin-top: 0;
+        }
+
+        .quote {
+            font-style: italic;
+            font-size: 1.2em;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-left: 5px solid #ff6b6b;
+            max-width: 600px;
+        }
+
+        .author {
+            text-align: right;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        button {
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #ff8e8e;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .game-container {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            display: none;
+        }
+
+        #balloon {
+            width: 100px;
+            height: 120px;
+            background-color: #ff6b6b;
+            border-radius: 50%;
+            position: relative;
+            margin: 0 auto;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        #balloon:before {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            width: 2px;
+            height: 30px;
+            background-color: #666;
+            transform: translateX(-50%);
+        }
+
+        #balloon:after {
+            content: "🎈";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 30px;
+        }
+
+        #score {
+            font-size: 1.2em;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .hidden-message {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #ffebee;
+            border-radius: 10px;
+            animation: fadeIn 1s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            border-radius: 50%;
+            animation: fall 5s linear infinite;
+            z-index: 1000;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-100vh) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Happy 20th Birthday, Amy! 🎉</h1>
+        <h2>Welcome to your special day!</h2>
+
+        <div class="quote" id="quoteBox">
+            "Life happens wherever you are, whether you make it or not."
+            <div class="author">— Uncle Iroh</div>
+        </div>
+
+        <p>Today we celebrate you and the amazing person you are becoming. Here's to your 20s - may they be filled with joy, adventure, and growth!</p>
+
+        <div class="buttons">
+            <button id="surpriseBtn">Click for a Surprise!</button>
+            <button id="quoteBtn">is that Avatar?</button>
+            <button id="gameBtn">Play a Birthday Game!</button>
+        </div>
+
+        <div id="hiddenMessage" class="hidden-message"></div>
+
+        <div id="gameContainer" class="game-container">
+            <h3>Pop the Balloons!</h3>
+            <p>Click on the balloon to pop it and earn points. Try to get 10 points!</p>
+            <div id="balloon"></div>
+            <div id="score">Score: 0</div>
+        </div>
+    </div>
+
+    <script>
+        // Avatar Quotes
+        const avatarQuotes = [
+            { text: "Life happens wherever you are, whether you make it or not.", author: "Uncle Iroh" },
+            { text: "Pride is not the opposite of shame, but its source. True humility is the only antidote to shame.", author: "Uncle Iroh" },
+            { text: "While it is always best to believe in oneself, a little help from others can be a great blessing.", author: "Uncle Iroh" },
+            { text: "In the darkest times, hope is something you give yourself. That is the meaning of inner strength.", author: "Uncle Iroh" },
+            { text: "Sometimes life is like this dark tunnel. You can’t always see the light at the end... but if you just keep moving, you will come to a better place.", author: "Uncle Iroh" },
+            { text: "It's time for you to look inward and begin asking yourself the big questions: Who are you? And what do you want?", author: "Uncle Iroh" },
+            { text: "My cabbages!", author: "Cabbage Merchant" },
+            { text: "That's rough, buddy.", author: "Zuko" },
+            { text: "I’m just a guy with a boomerang.", author: "Sokka" },
+            { text: "There is no war in Ba Sing Se.", author: "Joo Dee" }
+        ];
+
+        document.getElementById('quoteBtn').addEventListener('click', function () {
+            const quoteBox = document.getElementById('quoteBox');
+            const random = avatarQuotes[Math.floor(Math.random() * avatarQuotes.length)];
+            quoteBox.innerHTML = `"${random.text}"<div class="author">— ${random.author}</div>`;
+        });
+
+        // Surprise message
+        document.getElementById('surpriseBtn').addEventListener('click', function () {
+            const messages = [
+                "You are loved more than you know!",
+                "Your smile brightens everyone's day!",
+                "The world is better with you in it!",
+                "You're capable of amazing things!",
+                "Your 20s are going to be incredible!"
+            ];
+
+            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+            const hiddenMessage = document.getElementById('hiddenMessage');
+
+            hiddenMessage.textContent = randomMessage;
+            hiddenMessage.style.display = 'block';
+
+            // Confetti
+            createConfetti();
+        });
+
+        // Game
+        document.getElementById('gameBtn').addEventListener('click', function () {
+            const gameContainer = document.getElementById('gameContainer');
+            gameContainer.style.display = gameContainer.style.display === 'block' ? 'none' : 'block';
+        });
+
+        let score = 0;
+        const balloon = document.getElementById('balloon');
+        const scoreDisplay = document.getElementById('score');
+
+        balloon.addEventListener('click', function () {
+            score++;
+            scoreDisplay.textContent = `Score: ${score}`;
+
+            balloon.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                balloon.style.transform = 'scale(1)';
+                balloon.style.backgroundColor = getRandomColor();
+            }, 200);
+
+            if (score >= 10) {
+                scoreDisplay.textContent = "You won! Happy Birthday Amy! 🎉";
+                createConfetti();
+                score = 0;
+                setTimeout(() => {
+                    scoreDisplay.textContent = `Score: ${score}`;
+                }, 2000);
+            }
+        });
+
+        function getRandomColor() {
+            const colors = ['#ff6b6b', '#ffb347', '#7bc043', '#00a8e8', '#b19cd9'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.backgroundColor = getRandomColor();
+                confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                confetti.style.width = `${Math.random() * 10 + 5}px`;
+                confetti.style.height = confetti.style.width;
+                document.body.appendChild(confetti);
+
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+    </script>
+</body>
+</html>
